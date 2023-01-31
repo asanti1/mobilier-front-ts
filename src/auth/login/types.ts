@@ -6,7 +6,7 @@ export type LoginFormValues = {
   invalidCredentials: string;
 };
 
-export type ErrorTypes = Partial<
+export type LoginErrorTypes = Partial<
   FieldErrorsImpl<{
     email: string;
     password: string;

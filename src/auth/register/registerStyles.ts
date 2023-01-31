@@ -1,4 +1,4 @@
-import { SxProps } from "@mui/material";
+import { SxProps } from "@mui/material/";
 import theme from "../../material/theme";
 
 export const generalGridStyle: SxProps = {};
@@ -11,5 +11,5 @@ export const containerStyle: SxProps = {
   borderWidth: "5px",
   position: "relative",
   alignItems: "center",
-  marginTop: "15vh"
+  marginTop: "15vh",
 };

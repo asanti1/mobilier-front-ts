@@ -12,4 +12,18 @@ export type RegisterFormValues = {
   phone: string;
 };
 
+export const defaultValues: RegisterFormValues = {
+  firstName: "",
+  lastName: "",
+  password1: "",
+  password2: "",
+  email: "",
+  phone: "",
+  country: "",
+  state: "",
+  city: "",
+  street: "",
+  roomNumber: "",
+};
+
 export const countries = ["", "Argentina", "Brasil", "Chile"];

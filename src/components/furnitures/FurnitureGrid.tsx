@@ -1,5 +1,5 @@
-import { Grid } from "@mui/material";
-import { Container } from "@mui/system";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/system/Container";
 import React, { useEffect } from "react";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
 import { useAppSelector } from "../../hooks/redux/useAppSelector";

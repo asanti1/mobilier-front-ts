@@ -5,49 +5,51 @@ import {
   Grid,
   MenuItem,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/common/Navbar";
-import { EMAIL_REGEX } from "../../constants/constants";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
+import { register } from "../../store/auth/thunks";
+import {
+  emailPatternValidation
+} from "../../validations/forms";
 import { containerStyle } from "./registerStyles";
-import { countries, RegisterFormValues } from "./types";
-
-const defaultValues: RegisterFormValues = {
-  firstName: "",
-  lastName: "",
-  password1: "",
-  password2: "",
-  phone: "",
-  email: "",
-  country: "",
-  state: "",
-  city: "",
-  street: "",
-  roomNumber: "",
-};
+import { countries, defaultValues, RegisterFormValues } from "./types";
 
 const Register = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
+    watch,
   } = useForm<RegisterFormValues>({ defaultValues });
 
   const dispatch = useAppDispatch();
-
-  const onSubmit = (data: RegisterFormValues, event: any) => {
-    console.log(data);
-
-    /*     if (data.email === defaultValues.email) return;
-    console.log("oops");
-
-    event.preventDefault();
-    dispatch(login(data)); */
+  const onSubmit = async (data: RegisterFormValues, event: any) => {
+    await dispatch(
+      await register({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password1,
+        phone: data.phone,
+        address: [
+          {
+            country: data.country,
+            state: data.state,
+            city: data.city,
+            street: data.street,
+            roomNumber: data.roomNumber,
+          },
+        ],
+      })
+    );
   };
+
   return (
     <React.Fragment>
       <Navbar />
@@ -55,10 +57,9 @@ const Register = () => {
         <Grid container>
           <Typography variant="h4">Register</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container /* spacing={0} */>
+            <Grid container>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO:
                   name="firstName"
                   control={control}
                   rules={{ required: "First name is required" }}
@@ -75,7 +76,6 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO:
                   name="lastName"
                   control={control}
                   rules={{ required: "Last name is required" }}
@@ -94,14 +94,16 @@ const Register = () => {
             <Grid container>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO: PASSWORD1 PASSWORD2 SHOULD MATCH
                   name="password1"
                   control={control}
-                  rules={{ required: "Password is required" }}
+                  rules={{
+                    required: "Password is required",
+                  }}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
                       sx={{ mt: 2 }}
                       label="Password"
+                      type="password"
                       error={!!error}
                       {...field}
                       helperText={error?.message}
@@ -111,14 +113,22 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO:
                   name="password2"
                   control={control}
-                  rules={{ required: "Password is required" }}
+                  rules={{
+                    required: "Password is required",
+                    validate: {
+                      required: (value) => {
+                        if (watch("password1") != value)
+                          return "Passwords dont match";
+                      },
+                    },
+                  }}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
                       sx={{ mt: 2 }}
                       label="Confirm Password"
+                      type="password"
                       error={!!error}
                       {...field}
                       helperText={error?.message}
@@ -127,10 +137,9 @@ const Register = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container>
+            <Grid container marginBottom={4}>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO:
                   name="phone"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
@@ -145,12 +154,15 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Controller
-                  //TODO:
                   name="email"
                   control={control}
                   rules={{
                     required: "Email is required",
-                    pattern: EMAIL_REGEX,
+                    validate: {
+                      required: (value) => {
+                        return emailPatternValidation(value);
+                      },
+                    },
                   }}
                   render={({ field, fieldState: { error } }) => (
                     <TextField
@@ -175,7 +187,6 @@ const Register = () => {
               <Grid container spacing={3}>
                 <Grid item xs={6}>
                   <Controller
-                    //TODO:
                     name="country"
                     control={control}
                     render={({ field: { value, ...field } }) => (
@@ -197,7 +208,6 @@ const Register = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                   <Controller
-                    //TODO:
                     name="state"
                     control={control}
                     render={({ field, fieldState: { error } }) => (
@@ -210,7 +220,6 @@ const Register = () => {
             <Grid container spacing={2} marginTop={1}>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                 <Controller
-                  //TODO:
                   name="city"
                   control={control}
                   render={({ field }) => <TextField label="City" {...field} />}
@@ -218,7 +227,6 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                 <Controller
-                  //TODO:
                   name="street"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
@@ -228,7 +236,6 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
                 <Controller
-                  //TODO:
                   name="roomNumber"
                   control={control}
                   render={({ field, fieldState: { error } }) => (
@@ -237,7 +244,7 @@ const Register = () => {
                 />
               </Grid>
             </Grid>
-            <Grid container /* spacing={3} */>
+            <Grid container>
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Button type="submit">Register</Button>
               </Grid>

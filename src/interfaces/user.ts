@@ -9,4 +9,5 @@ export interface User {
   phone?: string;
   address?: Address[];
   roles?: Role[];
+  _id?: string;
 }

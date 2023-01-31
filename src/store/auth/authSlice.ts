@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../interfaces/user";
-import { RootState } from "../store";
+import produce from "immer";
+import { Address } from "../../interfaces/address";
+import { UpdateUserDto } from "../../interfaces/user/updateUserDto";
+import { UpdateAddressArray } from "./interfaces/updateAddressArray";
 import { Status, UserState } from "./interfaces/userState";
-import { login } from "./thunks";
+import { login, register } from "./thunks";
 
 export const initialState: UserState = {
   user: {},
@@ -14,23 +16,34 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    onChecking: (state) => {
-      state.status = Status.CHECKING;
-      state.user = {};
-      state.error = undefined;
-    },
-    onLogin: (state, action: PayloadAction<User>) => {
-      state.status = Status.AUTHENTICATED;
-      state.user = action.payload;
-      state.error = undefined;
-    },
-    onLogout: (state, action: PayloadAction<string>) => {
+    clearUser: (state) => {
       state.status = Status.NOT_AUTHENTICATED;
       state.user = {};
-      state.error = action.payload;
+      state.error = undefined;
     },
     clearErrorMessage: (state) => {
       state.error = undefined;
+    },
+    updateUserInformation: (state, action: PayloadAction<UpdateUserDto>) => {
+      return produce(state, (draft) => {
+        draft.user.email = action.payload.email;
+        draft.user.phone = action.payload.phone;
+      });
+    },
+    updateAnAddress: (state, action: PayloadAction<UpdateAddressArray>) => {
+      return produce(state, (draft) => {
+        draft.user.address![action.payload.index] = action.payload.address;
+      });
+    },
+    addAnAddress: (state, action: PayloadAction<Address>) => {
+      return produce(state, (draft) => {
+        draft.user.address?.push(action.payload);
+      });
+    },
+    deleteAnAddress: (state, action: PayloadAction<number>) => {
+      return produce(state, (draft) => {
+        draft.user.address?.splice(action.payload, 1);
+      });
     },
   },
   extraReducers: (builder) => {
@@ -39,17 +52,32 @@ export const authSlice = createSlice({
         state.status = Status.CHECKING;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.user = action.payload.user!;
+        state.user = action.payload;
         state.status = Status.AUTHENTICATED;
       })
       .addCase(login.rejected, (state, action) => {
+        state.error = action.error.message;
+        state.status = Status.NOT_AUTHENTICATED;
+      })
+      .addCase(register.pending, (state) => {
+        state.status = Status.CHECKING;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = Status.AUTHENTICATED;
+      })
+      .addCase(register.rejected, (state, action) => {
         state.error = action.error.message;
         state.status = Status.NOT_AUTHENTICATED;
       });
   },
 });
 
-export const selectError = (state: RootState) => state.auth.error;
-
-export const { onChecking, onLogin, onLogout, clearErrorMessage } =
-  authSlice.actions;
+export const {
+  clearUser,
+  clearErrorMessage,
+  updateUserInformation,
+  updateAnAddress,
+  addAnAddress,
+  deleteAnAddress,
+} = authSlice.actions;

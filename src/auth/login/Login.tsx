@@ -1,14 +1,19 @@
-import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { hasLoginFailed } from "../../api/mobilierApi";
 import Navbar from "../../components/common/Navbar";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
+import { typographyErrorStyle } from "../../material/errorStyle";
 import { login } from "../../store/auth/thunks";
 import { emailPatternValidation } from "../../validations/forms";
 import { containerStyle } from "./loginStyles";
-import { ErrorTypes, LoginFormValues } from "./types";
+import { LoginErrorTypes, LoginFormValues } from "./types";
 
 const defaultValues = {
   email: "",
@@ -29,7 +34,7 @@ const Login = () => {
 
   const dispatch = useAppDispatch();
 
-  const onError = (errors: ErrorTypes) => {
+  const onError = (errors: LoginErrorTypes) => {
     if (errors.invalidCredentials) {
       clearErrors("invalidCredentials");
       onSubmit(getValues());
@@ -58,7 +63,11 @@ const Login = () => {
                 Login
               </Typography>
               {errors.invalidCredentials && (
-                <Typography variant="h6" marginTop={2}>
+                <Typography
+                  variant="subtitle1"
+                  sx={typographyErrorStyle}
+                  marginTop={2}
+                >
                   {errors.invalidCredentials.message}
                 </Typography>
               )}
