@@ -5,17 +5,15 @@ import {
   Grid,
   MenuItem,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/common/Navbar";
+import Navbar from "../../components/common/navbar/Navbar";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
 import { register } from "../../store/auth/thunks";
-import {
-  emailPatternValidation
-} from "../../validations/forms";
+import { emailPatternValidation } from "../../validations/forms";
 import { containerStyle } from "./registerStyles";
 import { countries, defaultValues, RegisterFormValues } from "./types";
 
@@ -52,7 +50,7 @@ const Register = () => {
 
   return (
     <React.Fragment>
-      <Navbar />
+      <Navbar searchBarDisabled={true} shoppingCartDisabled={true} />
       <Container sx={containerStyle} maxWidth="sm">
         <Grid container>
           <Typography variant="h4">Register</Typography>
@@ -129,7 +127,7 @@ const Register = () => {
                       sx={{ mt: 2 }}
                       label="Confirm Password"
                       type="password"
-                      error={!!error}
+                      error={!!error} 
                       {...field}
                       helperText={error?.message}
                     />

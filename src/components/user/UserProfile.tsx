@@ -1,13 +1,14 @@
-import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import Navbar from "../common/Navbar";
+import Navbar from "../common/navbar/Navbar";
 import ProfileAddressesInformation from "./ProfileAddressesInformation";
 import ProfileMainInformation from "./ProfileMainInformation";
 import ProfilePasswordChange from "./ProfilePasswordChange";
+import ProfileTickets from "./ProfileTickets";
 
 export interface TabPanelProps {
   index: number;
@@ -36,11 +37,13 @@ const UserProfile = () => {
             <Tab label="Profile" />
             <Tab label="Address" />
             <Tab label="Change Your Password" />
+            <Tab label="Your Tickets" />
           </Tabs>
         </AppBar>
         <ProfileMainInformation value={value} index={0} />
         <ProfileAddressesInformation value={value} index={1} />
         <ProfilePasswordChange value={value} index={2} />
+        <ProfileTickets value={value} index={3} />
       </Box>
     </React.Fragment>
   );

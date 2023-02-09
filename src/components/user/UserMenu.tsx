@@ -10,6 +10,8 @@ import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
 import { useAppSelector } from "../../hooks/redux/useAppSelector";
 import { Role } from "../../interfaces/role";
 import { clearUser } from "../../store/auth/authSlice";
+import { onClearUserSales } from "../../store/sale/saleSlice";
+import { onClearCart } from "../../store/shoppingCart/shoppingCartSlice";
 
 const UserMenu = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +28,7 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     dispatch(clearUser());
+    dispatch(onClearCart());
     handleCloseMenu();
   };
 
@@ -33,7 +36,7 @@ const UserMenu = () => {
     <React.Fragment>
       <Button onClick={handleOpenMenu}>Welcome, {firstName}</Button>
       <Menu anchorEl={anchor} open={open} onClose={handleCloseMenu}>
-        <MenuItem onClick={handleCloseMenu} component={Link} to={"profile"}>
+        <MenuItem onClick={handleCloseMenu} component={Link} to={"/profile"}>
           <Person2RoundedIcon />
           Profile
         </MenuItem>
@@ -41,7 +44,7 @@ const UserMenu = () => {
           <MenuItem
             onClick={handleCloseMenu}
             component={Link}
-            to={"administration"}
+            to={"/administration"}
           >
             <AdminPanelSettingsRoundedIcon />
             Administration

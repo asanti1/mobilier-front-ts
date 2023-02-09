@@ -1,8 +1,11 @@
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios from "axios";
 import { Address } from "../interfaces/address";
 import { Furniture } from "../interfaces/furniture";
+import { Sale } from "../interfaces/sale";
 import { User } from "../interfaces/user";
 import { UpdateUserDto } from "../interfaces/user/updateUserDto";
+import { GetFurnituresDto } from "./dto/getFurnituresDto";
+import { GetSalesDto } from "./dto/getSalesDto";
 import { UserCredentials } from "./dto/userLoginDto";
 
 export const mobilierApi = axios.create({
@@ -11,10 +14,17 @@ export const mobilierApi = axios.create({
 
 export let hasLoginFailed: string | undefined;
 
+export let hasPurchaseFailed: string | undefined;
+
 mobilierApi.interceptors.request.use(
   (config: any) => {
     const token = localStorage.getItem("token");
-    if (token) config.headers["Authorization"] = `bearer ${token}`;
+    if (token) {
+      config.headers["Authorization"] = `bearer ${token}`;
+      config.headers["Cache-Control"] = "no-cache";
+      config.headers["Pragma"] = "no-cache";
+      config.headers["Expires"] = 5;
+    }
     return config;
   },
   (error) => {
@@ -22,9 +32,26 @@ mobilierApi.interceptors.request.use(
   }
 );
 
-export const getFurnituresAPI = async () => {
-  const { data } = await mobilierApi.get<Furniture[]>(`/furnitures`);
+export const getFurnituresAPI = async (skip: number) => {
+  const { data } = await mobilierApi.get<GetFurnituresDto>(
+    `/furnitures/${skip - 1}`
+  );
   return data;
+};
+
+export const getFurnituresByNameAPI = async (search: string) => {
+  const { data } = await mobilierApi.get<GetFurnituresDto>(
+    `/furnitures/byName/${search}/`
+  );
+  return data;
+};
+
+export const addAFurnitureAPI = async (furniture: Furniture) => {
+  await mobilierApi.post(`/furnitures`, furniture);
+};
+
+export const deleteFurnitureByIdAPI = async (id: string) => {
+  const result = await mobilierApi.delete(`/furnitures/${id}`);
 };
 
 export const loginAPI = async (loginCredentials: UserCredentials) => {
@@ -139,4 +166,36 @@ export const deleteAnAddressById = async (
   } catch (error: Error | any) {
     throw new Error(error.response.data.message);
   }
+};
+
+export const getUsersAPI = async () => {
+  try {
+    const { data } = await mobilierApi.get<User[]>("/users/");
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const addASale = async (sale: Sale) => {
+  try {
+    const { data } = await mobilierApi.post<Sale>("/sale", sale);
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      hasPurchaseFailed = error.response!.data.message;
+      throw new Error(error.response!.data.message);
+    }
+  }
+};
+
+export const getAllUserSalesAPI = async (id: string) => {
+  const { data } = await mobilierApi.get<GetSalesDto>(`/sale/${id}`);
+
+  return data;
+};
+
+export const updateStatusAPI = async (id: string) => {
+  await mobilierApi.patch(`/sale/${id}`);
+  return;
 };

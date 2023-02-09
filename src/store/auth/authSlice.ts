@@ -17,9 +17,8 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     clearUser: (state) => {
-      state.status = Status.NOT_AUTHENTICATED;
       state.user = {};
-      state.error = undefined;
+      state.status = Status.NOT_AUTHENTICATED;
     },
     clearErrorMessage: (state) => {
       state.error = undefined;

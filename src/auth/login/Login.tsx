@@ -7,7 +7,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { hasLoginFailed } from "../../api/mobilierApi";
-import Navbar from "../../components/common/Navbar";
+import Navbar from "../../components/common/navbar/Navbar";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";
 import { typographyErrorStyle } from "../../material/errorStyle";
 import { login } from "../../store/auth/thunks";
@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <Navbar />
+      <Navbar searchBarDisabled={true} loginButtonDisabled={true} />
       <Container sx={containerStyle} maxWidth="sm">
         <Grid container>
           <form onSubmit={handleSubmit(onSubmit, onError)}>

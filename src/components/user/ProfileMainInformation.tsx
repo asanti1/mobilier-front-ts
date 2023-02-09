@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import {
   hasLoginFailed,
   modifyUserById,
-  tokenRefreshAPI,
+  tokenRefreshAPI
 } from "../../api/mobilierApi";
 import { LoginErrorTypes } from "../../auth/login/types";
 import { useAppDispatch } from "../../hooks/redux/useAppDispatch";

@@ -1,13 +1,37 @@
-import { getFurnituresAPI } from "../../api/mobilierApi";
-import { AppDispatch, RootState } from "../store";
-import { setFurnitures, startLoadingFurnitures } from "./furnituresSlice";
+import {
+  deleteFurnitureByIdAPI,
+  getFurnituresAPI,
+  getFurnituresByNameAPI,
+} from "../../api/mobilierApi";
+import { AppDispatch } from "../store";
+import {
+  onDeleteFurniture,
+  setFurnitures,
+  startLoadingFurnitures,
+} from "./furnituresSlice";
 
-export const getFurnitures = () => {
+export const getFurnitures = (skip: number) => {
   return async (dispatch: AppDispatch) => {
     dispatch(startLoadingFurnitures());
 
-    const data = await getFurnituresAPI();
+    const data = await getFurnituresAPI(skip);
 
     dispatch(setFurnitures(data));
+  };
+};
+
+export const getFurnituresByName = (search: string) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(startLoadingFurnitures());
+
+    const data = await getFurnituresByNameAPI(search);
+    dispatch(setFurnitures(data));
+  };
+};
+
+export const deleteFurnitureById = (id: string) => {
+  return async (dispatch: AppDispatch) => {
+    await deleteFurnitureByIdAPI(id);
+    dispatch(onDeleteFurniture(id));
   };
 };

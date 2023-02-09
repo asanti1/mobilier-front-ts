@@ -1,7 +1,7 @@
-import { Box, Container, Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useAppSelector } from "../../hooks/redux/useAppSelector";
-import AddressItem from "./Address";
+import AddressItem from "./AddressItem";
 import { FormType } from "./types";
 import { TabPanelProps } from "./UserProfile";
 
@@ -52,6 +52,7 @@ const ProfileAddressesInformation = (props: TabPanelProps) => {
             <Grid
               container
               maxWidth="105vw"
+              justifyContent="center"
               columns={{ xs: 1, sm: 4, md: 12, lg: 12, xl: 12 }}
             >
               <AddressItem
