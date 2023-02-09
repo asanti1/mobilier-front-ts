@@ -289,7 +289,7 @@ const AddFurniture = (props: TabPanelProps) => {
                   onSubmit={handleSubmit(onSubmit)}
                   disabled={!watch("password")}
                 >
-                  Login
+                  Add Furniture
                 </Button>
               </Grid>
             </form>
