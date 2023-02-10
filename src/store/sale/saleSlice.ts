@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import produce from "immer";
 import { GetSalesDto } from "../../api/dto/getSalesDto";
+import { Sale } from "../../interfaces/sale";
+import { User } from "../../interfaces/user";
 import { SaleState } from "./interfaces/saleSliceState";
 
 const initialState: SaleState = {
@@ -23,7 +25,10 @@ export const saleSlice = createSlice({
         draft = initialState;
       });
     },
-    onAddActualSale: (state, action: PayloadAction<SaleState>) => {
+    onAddActualSale: (
+      state,
+      action: PayloadAction<{ sale: Sale; user: User }>
+    ) => {
       state.sale = action.payload.sale;
       state.user = action.payload.user;
     },

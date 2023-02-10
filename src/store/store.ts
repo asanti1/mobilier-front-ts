@@ -13,6 +13,7 @@ export const store = configureStore({
     shoppingCart: shoppingCartSlice.reducer,
     sale: saleSlice.reducer,
   },
+  devTools: false,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

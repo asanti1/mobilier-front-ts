@@ -43,7 +43,7 @@ const CartItemHandler = (props: PropTypesCartItemHandler) => {
         costPerItem: props.furniture.cost!,
         name: props.furniture.name!,
         cost: props.furniture.cost! * counter,
-        furnitureId: props.furniture._id,
+        furnitureId: props.furniture._id!,
         quantity: counter,
       })
     );

@@ -1,7 +1,7 @@
 {
   "name": "front-ecommerce-ts",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -23,7 +23,6 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "mui-image": "^1.0.7",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.42.1",

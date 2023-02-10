@@ -66,7 +66,7 @@ const PrePurchaseAddressForm = () => {
       dispatch(
         onAddActualSale({
           user: user,
-          sale: sale,
+          sale: sale!,
         })
       );
       navigate("/prePurchase/congratulations");

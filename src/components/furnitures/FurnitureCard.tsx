@@ -15,6 +15,7 @@ import { useAppSelector } from "../../hooks/redux/useAppSelector";
 import { Furniture } from "../../interfaces/furniture";
 import { Status } from "../../store/auth/interfaces/userState";
 import CartItemHandler from "./CartItemHandler";
+import placeholder from "../../assets/placeholder.png";
 
 export type FurnitureCardProps = {
   furniture: Furniture;
@@ -44,7 +45,8 @@ const FurnitureCard = (props: FurnitureCardProps): JSX.Element => {
             </Typography>
             <CardMedia
               sx={{ height: 190 }}
-              image="../src/assets/placeholder.png"
+              image={placeholder}
+              /* image="../src/assets/placeholder.png" */
             />
 
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
